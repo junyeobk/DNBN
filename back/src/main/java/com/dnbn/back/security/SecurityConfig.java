@@ -1,4 +1,4 @@
-package com.dnbn.back.global.config;
+package com.dnbn.back.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,14 +18,14 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http
 			.authorizeHttpRequests((requests) -> requests
-				.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+				// .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
 				.requestMatchers("/login", "/signup", "/user").authenticated()
 				.anyRequest().permitAll() // 어떤 요청이라도 인증 필요
 			)
 			.formLogin((form) -> form
 				.loginPage("/login")
-				.usernameParameter("user_id")
-				.passwordParameter("user_pw")
+				.usernameParameter("userId")
+				.passwordParameter("userPw")
 				.loginProcessingUrl("/login-process")
 				.defaultSuccessUrl("/", true)
 				.permitAll()

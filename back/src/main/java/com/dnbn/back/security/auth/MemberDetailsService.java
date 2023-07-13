@@ -1,4 +1,4 @@
-package com.dnbn.back.global.auth;
+package com.dnbn.back.security.auth;
 
 import java.util.NoSuchElementException;
 
@@ -18,15 +18,15 @@ public class MemberDetailsService implements UserDetailsService {
 	@Autowired MemberRepository memberRepository;
 
 	@Override
-	public UserDetails loadUserByUsername(String user_id) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 		// 비밀번호 체크는 스프링부트가 알아서 해준다.
-		Member member = memberRepository.findByUserId(user_id).orElseThrow(NoSuchElementException::new);
+		Member member = memberRepository.findByUserId(userId).orElseThrow(NoSuchElementException::new);
 		if (member != null) {
 			return new MemberDetails(member);
 		}
 		return User.builder()
-			.username(member.getUser_id())
-			.password(member.getUser_pw())
+			.username(member.getUserId())
+			.password(member.getUserPw())
 			.roles(member.getRole().name())
 			.build();
 	}

@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.dnbn.back.member.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-	Optional<Member> findByUserId(String user_Id);
+	Optional<Member> findByUserId(String userId);
 }

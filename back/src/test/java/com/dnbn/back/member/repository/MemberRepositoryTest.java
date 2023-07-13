@@ -1,7 +1,5 @@
 package com.dnbn.back.member.repository;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.Test;
@@ -26,8 +24,8 @@ class MemberRepositoryTest {
 	public void createMemberTest() throws Exception {
 	    //given
 		MemberCreateDto memberCreateDto = MemberCreateDto.builder()
-			.user_id("junyeobk")
-			.user_pw("1234")
+			.userId("junyeobk")
+			.userPw("1234")
 			.nickname("jubi")
 			.role(Role.USER)
 			.build();
