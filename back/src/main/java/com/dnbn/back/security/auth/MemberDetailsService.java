@@ -24,10 +24,6 @@ public class MemberDetailsService implements UserDetailsService {
 		if (member != null) {
 			return new MemberDetails(member);
 		}
-		return User.builder()
-			.username(member.getUserId())
-			.password(member.getUserPw())
-			.roles(member.getRole().name())
-			.build();
+		return null;
 	}
 }
