@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Entity
@@ -29,8 +28,8 @@ public class Member extends BaseTimeEntity{
 	@Id @GeneratedValue
 	@Column(name = "member_id")
 	private Long id;
-	private String user_id;
-	private String user_pw;
+	private String userId;
+	private String userPw;
 	private String nickname;
 	@Enumerated(EnumType.STRING)
 	private Role role;

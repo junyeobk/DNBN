@@ -1,4 +1,4 @@
-package com.dnbn.back.global.auth;
+package com.dnbn.back.security.auth;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -29,12 +29,12 @@ public class MemberDetails implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return member.getUser_pw();
+		return member.getUserPw();
 	}
 
 	@Override
 	public String getUsername() {
-		return member.getUser_id();
+		return member.getUserId();
 	}
 
 	@Override

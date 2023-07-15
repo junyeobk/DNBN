@@ -1,5 +1,7 @@
 package com.dnbn.back.member.model;
 
+import com.dnbn.back.member.entity.Member;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +13,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class MemberLoginDto {
-	private String user_id;
-	private String user_pw;
+	private String userId;
+	private String userPw;
+
+	public Member toEntity() {
+		return Member.builder()
+			.userId(userId)
+			.userPw(userPw)
+			.build();
+	}
 }

@@ -1,7 +1,5 @@
 package com.dnbn.back.member.model;
 
-import java.time.LocalDateTime;
-
 import com.dnbn.back.member.entity.Member;
 import com.dnbn.back.member.entity.Role;
 
@@ -18,15 +16,15 @@ import lombok.NoArgsConstructor;
 public class MemberCreateDto {
 
 	private Long id;
-	private String user_id;
-	private String user_pw;
+	private String userId;
+	private String userPw;
 	private String nickname;
 	private Role role;
 
 	public Member toEntity() {
 		return Member.builder()
-			.user_id(user_id)
-			.user_pw(user_pw)
+			.userId(userId)
+			.userPw(userPw)
 			.nickname(nickname)
 			.role(role)
 			.build();
