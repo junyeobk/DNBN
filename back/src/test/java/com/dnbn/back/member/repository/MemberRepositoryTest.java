@@ -27,7 +27,7 @@ class MemberRepositoryTest {
 			.userId("junyeobk")
 			.userPw("1234")
 			.nickname("jubi")
-			.role(Role.USER)
+			.role(Role.ROLE_USER)
 			.build();
 
 		Member member = memberCreateDto.toEntity();

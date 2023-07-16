@@ -2,58 +2,27 @@ package com.dnbn.back.security.auth;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.dnbn.back.member.entity.Member;
 
 import lombok.Data;
 
-@Data
-public class MemberDetails implements UserDetails {
+public class MemberDetails extends User {
 
-	private final Member member;
+	private final Long id;
 
 	public MemberDetails(Member member) {
-		this.member = member;
+		super(member.getUserId(), member.getUserPw(), List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
+		this.id = member.getId();
 	}
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.singleton(
-			new SimpleGrantedAuthority(member.getRole().name())
-		);
-	}
-
-	@Override
-	public String getPassword() {
-		return member.getUserPw();
-	}
-
-	@Override
-	public String getUsername() {
-		return member.getUserId();
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return true;
+	public Long getId() {
+		return id;
 	}
 }

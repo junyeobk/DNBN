@@ -1,6 +1,7 @@
 package com.dnbn.back.member.entity;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.StringUtils;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
