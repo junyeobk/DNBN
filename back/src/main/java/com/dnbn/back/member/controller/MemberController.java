@@ -28,17 +28,21 @@ public class MemberController {
 
 	private final MemberService memberService;
 
-	//localhost:8098/api/join?userId=kim&userPw=1234&nickname=주비
-	@PostMapping("/join")
+	//http://localhost:8098/api/signup?userId=junyeobk&userPw=1234&nickname=주비
+	@PostMapping("/signup")
 	public ResponseEntity<?> join(MemberCreateDto memberCreateDto) {
 		memberService.join(memberCreateDto);
 		return ResponseEntity.ok("회원가입 success");
 	}
 
+	@GetMapping("/login")
+	public String login() {
+		return "로그인 페이지";
+	}
+
 	@PostMapping("/login")
-	public ResponseEntity<?> login(MemberLoginDto memberLoginDto) {
-		String userId = memberService.login(memberLoginDto);
-		return ResponseEntity.ok(userId);
+	public ResponseEntity<?> loginSuccess() {
+		return ResponseEntity.ok("로그인 success");
 	}
 
 }

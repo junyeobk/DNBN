@@ -1,81 +1,80 @@
 package com.dnbn.back.security;
 
-import static org.springframework.security.config.Customizer.*;
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.dnbn.back.security.auth.MemberDetailsService;
-
-import jakarta.servlet.DispatcherType;
+import com.dnbn.back.security.handler.Http401Handler;
+import com.dnbn.back.security.handler.Http403Handler;
+import com.dnbn.back.security.handler.LoginFailHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
 
 	@Bean
-	public InMemoryUserDetailsManager userDetailsService() {
-		UserDetails user = User.builder()
-				.username("user")
-				.password("password")
-				.roles("USER")
-				.build();
-		return new InMemoryUserDetailsManager(user);
+	public WebSecurityCustomizer webSecurityCustomizer() {
+		return web -> web.ignoring()
+			.requestMatchers("/favicon.ico")
+			.requestMatchers("/error")
+			.requestMatchers(toH2Console());
+	}
+
+
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		return http
+			.csrf(AbstractHttpConfigurer::disable)
+			.cors(AbstractHttpConfigurer::disable)
+			.authorizeHttpRequests((requests) -> requests
+				.requestMatchers("/api/login", "/api/signup").permitAll()
+				.requestMatchers("/user").hasAnyRole("USER", "ADMIN") // 권한 여러개
+				.requestMatchers("/admin").hasRole("ADMIN")
+				.anyRequest().authenticated() // 어떤 요청이라도 인증 필요
+			)
+			.logout(Customizer.withDefaults() // "/logout" 으로 인증 해제
+				// (logout) -> logout
+				// .logoutSuccessUrl("/login")
+				// .invalidateHttpSession(true)
+			)
+			.formLogin(login -> login
+				.usernameParameter("userId")
+				.passwordParameter("userPw")
+				.loginPage("/api/login") // 로그인 페이지
+				.loginProcessingUrl("/api/login") // 실제 post로 값을 받아서 검증하는 주소
+				.defaultSuccessUrl("/") // 로그인 성공 시 이동할 주소
+				.failureHandler(new LoginFailHandler(new ObjectMapper()))
+			)
+			.rememberMe(rm -> rm
+				.alwaysRemember(false)
+				.rememberMeParameter("remember") // 로그인 시 파라미터로 remember 값이 넘어오면 세션이 만료되더라도 자동로그인
+				.tokenValiditySeconds(2592000)
+				.userDetailsService(userDetailsService())
+			)
+			.exceptionHandling(e -> {
+				e.accessDeniedHandler(new Http403Handler());
+				e.authenticationEntryPoint(new Http401Handler());
+			})
+			.userDetailsService(userDetailsService())
+			.build();
 	}
 
 	@Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-			.authorizeHttpRequests(request -> request
-				.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-				// .requestMatchers("/login").permitAll()
-				// .anyRequest().authenticated()	// 어떠한 요청이라도 인증필요
-				.anyRequest().permitAll()
-			)
-			.formLogin(login -> login	// form 방식 로그인 사용
-				.loginPage("/login")
-				// .loginProcessingUrl("/login-process")
-				.usernameParameter("userId")
-				.passwordParameter("userPw")
-				// .defaultSuccessUrl("/view/dashboard", true)	// 성공 시 dashboard로
-				.permitAll()	// 대시보드 이동이 막히면 안되므로 얘는 허용
-			)
-			.logout(withDefaults()	// 로그아웃은 기본설정으로 (/logout으로 인증해제)
-			)
-			.csrf((csrf) -> csrf.disable()
-			)
-			.cors((cors) -> cors.disable());
-
-        return http.build();
+    public UserDetailsService userDetailsService() {
+        return new MemberDetailsService();
     }
-
-	// @Bean
-	// public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-	// 	return http
-	// 		.authorizeHttpRequests((requests) -> requests
-	// 			.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-	// 			// .requestMatchers("/login", "/signup", "/user").permitAll()
-	// 			.anyRequest().authenticated() // 어떤 요청이라도 인증 필요
-	// 		)
-	// 		.logout(Customizer.withDefaults() // "/logout" 으로 인증 해제
-	// 			// (logout) -> logout
-	// 			// .logoutSuccessUrl("/login")
-	// 			// .invalidateHttpSession(true)
-	// 		)
-	// 		.csrf((csrf) -> csrf.disable()
-	// 		)
-	// 		.cors((cors) -> cors.disable())
-	// 		.build();
-	// }
 
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {

@@ -36,12 +36,12 @@ public class TestData {
 
 		@Transactional
 		public void init() {
-			MemberCreateDto memberCreateDto = MemberCreateDto.builder()
-				.userId("junyeobk")
-				.userPw("1234")
-				.nickname("주비")
-				.build();
-			memberService.join(memberCreateDto);
+			// MemberCreateDto memberCreateDto = MemberCreateDto.builder()
+			// 	.userId("junyeobk")
+			// 	.userPw("1234")
+			// 	.nickname("주비")
+			// 	.build();
+			// memberService.join(memberCreateDto);
 		}
 	}
 }

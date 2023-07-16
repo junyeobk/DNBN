@@ -31,14 +31,14 @@ public class MemberService {
 
 		memberRepository.save(member);
 	}
-
-	public String login(MemberLoginDto memberLoginDto) {
-		Member member = memberRepository.findByUserId(memberLoginDto.getUserId())
-			.orElseThrow(NoSuchElementException::new);
-		if (!bCryptPasswordEncoder.matches(memberLoginDto.getUserPw(), member.getUserPw())) {
-			throw new NoSuchElementException();
-		}
-		return member.getUserId();
-	}
+	//
+	// public String login(MemberLoginDto memberLoginDto) {
+	// 	Member member = memberRepository.findByUserId(memberLoginDto.getUserId())
+	// 		.orElseThrow(NoSuchElementException::new);
+	// 	if (!bCryptPasswordEncoder.matches(memberLoginDto.getUserPw(), member.getUserPw())) {
+	// 		throw new NoSuchElementException();
+	// 	}
+	// 	return member.getUserId();
+	// }
 
 }
