@@ -1,4 +1,4 @@
-package com.dnbn.back.security;
+package com.dnbn.back.security.config;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.*;
 
@@ -39,7 +39,7 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.cors(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests((requests) -> requests
-				.requestMatchers("/api/login", "/api/signup").permitAll()
+				.requestMatchers("/api/members/login", "/api/members/signup").permitAll()
 				.requestMatchers("/user").hasAnyRole("USER", "ADMIN") // 권한 여러개
 				.requestMatchers("/admin").hasRole("ADMIN")
 				.anyRequest().authenticated() // 어떤 요청이라도 인증 필요
@@ -52,8 +52,8 @@ public class SecurityConfig {
 			.formLogin(login -> login
 				.usernameParameter("userId")
 				.passwordParameter("userPw")
-				.loginPage("/api/login") // 로그인 페이지
-				.loginProcessingUrl("/api/login") // 실제 post로 값을 받아서 검증하는 주소
+				.loginPage("/api/members/login") // 로그인 페이지
+				.loginProcessingUrl("/api/members/login") // 실제 post로 값을 받아서 검증하는 주소
 				.defaultSuccessUrl("/") // 로그인 성공 시 이동할 주소
 				.failureHandler(new LoginFailHandler(new ObjectMapper()))
 			)

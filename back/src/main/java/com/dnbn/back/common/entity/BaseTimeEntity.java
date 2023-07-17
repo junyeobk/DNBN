@@ -1,4 +1,4 @@
-package com.dnbn.back.member.entity;
+package com.dnbn.back.common.entity;
 
 import java.time.LocalDateTime;
 

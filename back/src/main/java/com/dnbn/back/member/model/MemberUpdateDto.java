@@ -3,7 +3,6 @@ package com.dnbn.back.member.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dnbn.back.member.entity.Member;
 import com.dnbn.back.member.entity.MyRegion;
 import com.dnbn.back.member.entity.Role;
 
@@ -17,21 +16,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class MemberCreateDto {
-
-	private Long id;
-	private String userId;
+public class MemberUpdateDto {
 	private String userPw;
 	private String nickname;
-	private Role role;
 	private List<MyRegion> myRegions = new ArrayList<>();
-
-	public Member toEntity() {
-		return Member.builder()
-			.userId(userId)
-			.userPw(userPw)
-			.nickname(nickname)
-			.role(role)
-			.build();
-	}
 }

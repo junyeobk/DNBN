@@ -1,4 +1,4 @@
-package com.dnbn.back.global.config;
+package com.dnbn.back.common.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dnbn.back.member.entity.Member;
-import com.dnbn.back.member.model.MemberCreateDto;
 import com.dnbn.back.member.service.MemberService;
 
 import jakarta.annotation.PostConstruct;

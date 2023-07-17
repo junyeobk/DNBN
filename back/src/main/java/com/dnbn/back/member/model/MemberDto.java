@@ -17,21 +17,22 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class MemberCreateDto {
-
-	private Long id;
+public class MemberDto {
+	private Long memberId;
 	private String userId;
 	private String userPw;
 	private String nickname;
 	private Role role;
 	private List<MyRegion> myRegions = new ArrayList<>();
 
-	public Member toEntity() {
-		return Member.builder()
-			.userId(userId)
-			.userPw(userPw)
-			.nickname(nickname)
-			.role(role)
+	public static MemberDto toMemberDto(Member member) {
+		return MemberDto.builder()
+			.memberId(member.getId())
+			.userId(member.getUserId())
+			.userPw(member.getUserPw())
+			.nickname(member.getNickname())
+			.role(member.getRole())
+			.myRegions(member.getMyRegions())
 			.build();
 	}
 }
